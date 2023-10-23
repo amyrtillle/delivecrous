@@ -27,7 +27,7 @@ const ItemCard = (props) => {
             style={{ width: 24 }}
             size={24}
             text=""
-            fillColor="#E33620"
+            fillColor={styles[variant].fillColor}
             bounceEffectIn={1}
             bounceEffectOut={1}
           />
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
       borderTopRightRadius: 5,
     },
     textContainer: { padding: 12, gap: 13 },
+    fillColor: "#E33620",
   },
   secondary: {
     container: {
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
       paddingRight: 15,
       paddingBottom: 15,
     },
+    fillColor: "#713335"
   },
 });
 
