@@ -5,7 +5,7 @@ import ItemCard from './components/itemCard';
 export default function App() {
   return (
     <View style={styles.container}>
-      <ItemCard />
+      <ItemCard variant="primary" />
       <StatusBar style="auto" />
     </View>
   );
