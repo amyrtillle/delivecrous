@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Image, Text, View } from "react-native";
+import { StyleSheet, Image, Text, View, FlatList } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import defaultFood from "../assets/foodDefault.jpg";
 
 const ItemCard = (props) => {
   const variant = props.variant ? props.variant : "primary";
@@ -10,19 +11,24 @@ const ItemCard = (props) => {
     ? props.description
     : "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
   const image = props.image
-    ? "../assets/" + props.image + "jpg"
-    : require("../assets/foodDefault.jpg");
+    ? props.image
+    : Image.resolveAssetSource(defaultFood).uri;
+
+  const allergene = props.allergene ? props.allergene : null;
 
   return (
     <View style={[styles[variant].container, styles.container]}>
-      <Image source={image} style={[styles[variant].image, styles.image]} />
+      <Image
+        source={{ uri: image }}
+        style={[styles[variant].image, styles.image]}
+      />
       <View style={styles[variant].textContainer}>
         <View style={styles.text}>
           <Text>{title}</Text>
           <Text>{price}€</Text>
         </View>
         <View style={styles.text}>
-          <Text style={{ width: 126 }}>{description}</Text>
+          <Text style={styles[variant].desc}>{description}</Text>
           <BouncyCheckbox
             style={{ width: 24 }}
             size={24}
@@ -33,11 +39,25 @@ const ItemCard = (props) => {
           />
         </View>
       </View>
+      {allergene && (
+        <View style={styles.tertiary.textContainer}>
+          <View style={styles.text && styles.allergene}>
+            <Text>Allergenes</Text>
+            <FlatList
+              data={allergene}
+              renderItem={({ item }) => <Text>{item.key}</Text>}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  allergene: {
+    gap: 22,
+  },
   container: {
     borderRadius: 5,
     borderColor: "#FDF7EF",
@@ -64,6 +84,9 @@ const styles = StyleSheet.create({
     },
     textContainer: { padding: 12, gap: 13 },
     fillColor: "#E33620",
+    desc: {
+      width: 126,
+    },
   },
   secondary: {
     container: {
@@ -76,6 +99,9 @@ const styles = StyleSheet.create({
       height: "100%",
       borderBottomLeftRadius: 5,
     },
+    desc: {
+      width: 126,
+    },
 
     textContainer: {
       flexGrow: 1,
@@ -85,7 +111,28 @@ const styles = StyleSheet.create({
       paddingRight: 15,
       paddingBottom: 15,
     },
-    fillColor: "#713335"
+    fillColor: "#713335",
+  },
+
+  tertiary: {
+    image: {
+      width: "100%",
+      aspectRatio: "4/3",
+      borderBottomLeftRadius: 5,
+    },
+    textContainer: {
+      paddingLeft: 8,
+      paddingTop: 8,
+      paddingRight: 15,
+      paddingBottom: 15,
+      gap: 10,
+      justifyContent: "space-between",
+    },
+    fillColor: "#E33620",
+    desc: {
+      width: "50%",
+      textAlign: "center",
+    },
   },
 });
 
