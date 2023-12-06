@@ -4,10 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ItemDetailScreen from "./views/ItemDetailScreen";
 
-import ItemCard from "./components/itemCard";
 import MenuBar from "./components/menuBar";
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import MenuScreen from "./views/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +41,7 @@ const App = () => {
 
 const [counter, setCounter] = useState(0);
 
+
   const updateCounter = (increment: any, key: number) => {
     setMenu((prevMenu) =>
       prevMenu.map((item) =>
@@ -51,36 +52,17 @@ const [counter, setCounter] = useState(0);
     setCounter((prevCounter) => (increment ? prevCounter + 1 : prevCounter - 1));
   };
 
-  const MenuScreen = ({ navigation }: { navigation: any }) => (
-    <View style={styles.container}>
-      <MenuBar counter={counter} />
-      <ScrollView>
-        <View style={styles.content}>
-          <Text style={styles.title}>La carte</Text>
-          <View style={styles.items}>
-            {menu.map((item) => (
-              <ItemCard
-                key={item.key}
-                item={item}
-                updateCounter={updateCounter}
-                isChecked={item.isChecked} // Pass the isChecked prop
-                onPress={() => navigation.navigate('ItemDetail', { item })}
-              />
-            ))}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-
   return (
     <NavigationContainer>
       <SafeAreaProvider>
       <SafeAreaView style={styles.topSafeArea} />
       <SafeAreaView style={{ flex: 1 }}>
+        <MenuBar counter={counter} />
         <Stack.Navigator>
-          <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
+          <Stack.Screen name="Menu" options={{ headerShown: false }}>
+            {(props) => <MenuScreen isChecked={false} {...props} menu={menu} updateCounter={updateCounter} />}
+          </Stack.Screen>
+        <Stack.Screen name="ItemDetail" component={ItemDetailScreen} options={{headerShown: false}} />
         </Stack.Navigator>
       </SafeAreaView>
       </SafeAreaProvider>

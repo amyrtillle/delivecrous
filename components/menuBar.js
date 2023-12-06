@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 const MenuBar = (props) => {
   const variant = props.variant ? props.variant : "primary";
@@ -7,10 +8,12 @@ const MenuBar = (props) => {
   return (
     <View style={styles.container}>
       {variant === "secondary" && (
-        <Image
-          source={require("../assets/leftArrow.png")}
-          style={styles.image}
-        />
+        <TouchableOpacity onPress={props.onPress}>
+          <Image
+            source={require("../assets/leftArrow.png")}
+            style={styles.image}
+          />
+        </TouchableOpacity>
       )}
 
       <Text style={styles[variant].title}>Delivecrous</Text>

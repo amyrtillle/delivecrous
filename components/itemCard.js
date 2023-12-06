@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Image, Text, View, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native";
 
@@ -23,15 +23,9 @@ const ItemCard = (props) => {
   const handleCheckboxPress = () => {
     props.updateCounter(!isChecked, item.key);
   };
-
-  const handleCardPress = () => {
-    // Navigate or perform other actions when the card is pressed
-    // Example: props.navigation.navigate('ItemDetail', { item });
-  };
-
   return (
     <View style={[styles[variant].container, styles.container]}>
-      <TouchableOpacity onPress={handleCardPress}>
+      <TouchableOpacity onPress={props.onPress}>
         <Image
           source={{ uri: image }}
           style={[styles[variant].image, styles.image]}
