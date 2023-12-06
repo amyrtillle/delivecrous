@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { StyleSheet, Image, Text, View, FlatList } from "react-native";
+import { TouchableOpacity } from "react-native";
+
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import defaultFood from "../assets/foodDefault.jpg";
 
 const ItemCard = (props) => {
   const item = props.item;
-  const [isChecked, setIsChecked] = useState(false);
+  const isChecked = props.isChecked;
   const variant = item.variant ? item.variant : "primary";
   const title = item.title ? item.title : "Lorem ipsum";
   const price = item.price ? item.price : "10";
@@ -19,16 +21,22 @@ const ItemCard = (props) => {
   const allergene = item.allergene ? item.allergene : null;
 
   const handleCheckboxPress = () => {
-    setIsChecked((prev) => !prev);
-    props.updateCounter(!isChecked);
+    props.updateCounter(!isChecked, item.key);
+  };
+
+  const handleCardPress = () => {
+    // Navigate or perform other actions when the card is pressed
+    // Example: props.navigation.navigate('ItemDetail', { item });
   };
 
   return (
     <View style={[styles[variant].container, styles.container]}>
-      <Image
-        source={{ uri: image }}
-        style={[styles[variant].image, styles.image]}
-      />
+      <TouchableOpacity onPress={handleCardPress}>
+        <Image
+          source={{ uri: image }}
+          style={[styles[variant].image, styles.image]}
+        />
+      </TouchableOpacity>
       <View style={styles[variant].textContainer}>
         <View style={styles.text}>
           <Text>{title}</Text>
@@ -43,6 +51,7 @@ const ItemCard = (props) => {
             bounceEffectIn={1}
             bounceEffectOut={1}
             onPress={handleCheckboxPress}
+            isChecked={isChecked}
           />
         </View>
       </View>
