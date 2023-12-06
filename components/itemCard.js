@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Image, Text, View, FlatList } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import defaultFood from "../assets/foodDefault.jpg";
 
 const ItemCard = (props) => {
-  const variant = props.variant ? props.variant : "primary";
-  const title = props.title ? props.title : "Lorem ipsum";
-  const price = props.price ? props.price : "10";
-  const description = props.description
-    ? props.description
+  const item = props.item;
+  const [isChecked, setIsChecked] = useState(false);
+  const variant = item.variant ? item.variant : "primary";
+  const title = item.title ? item.title : "Lorem ipsum";
+  const price = item.price ? item.price : "10";
+  const description = item.description
+    ? item.description
     : "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-  const image = props.image
-    ? props.image
+  const image = item.image
+    ? item.image
     : Image.resolveAssetSource(defaultFood).uri;
 
-  const allergene = props.allergene ? props.allergene : null;
+  const allergene = item.allergene ? item.allergene : null;
+
+  const handleCheckboxPress = () => {
+    setIsChecked((prev) => !prev);
+    props.updateCounter(!isChecked);
+  };
 
   return (
     <View style={[styles[variant].container, styles.container]}>
@@ -27,15 +34,15 @@ const ItemCard = (props) => {
           <Text>{title}</Text>
           <Text>{price}€</Text>
         </View>
-        <View style={styles.text}>
-          <Text style={styles[variant].desc}>{description}</Text>
+        <View style={styles.descContent}>
+          <Text style={styles.descText}>{description}</Text>
           <BouncyCheckbox
-            style={{ width: 24 }}
             size={24}
             text=""
             fillColor={styles[variant].fillColor}
             bounceEffectIn={1}
             bounceEffectOut={1}
+            onPress={handleCheckboxPress}
           />
         </View>
       </View>
@@ -72,20 +79,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
+  descContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  descText: {
+    width: "80%",
+  },
+
   primary: {
     container: {
-      width: 183,
+      width: "45%",
       gap: 13,
     },
     image: {
-      width: 183,
+      width: "100%",
       height: 207,
       borderTopRightRadius: 5,
     },
     textContainer: { padding: 12, gap: 13 },
     fillColor: "#E33620",
     desc: {
-      width: 126,
+      width: "100%",
     },
   },
   secondary: {
@@ -99,9 +115,6 @@ const styles = StyleSheet.create({
       height: "100%",
       borderBottomLeftRadius: 5,
     },
-    desc: {
-      width: 126,
-    },
 
     textContainer: {
       flexGrow: 1,
@@ -112,6 +125,9 @@ const styles = StyleSheet.create({
       paddingBottom: 15,
     },
     fillColor: "#713335",
+    desc: {
+      width: "100%",
+    },
   },
 
   tertiary: {
