@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Image, Text, View, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native";
-
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import defaultFood from "../assets/foodDefault.jpg";
 
 const ItemCard = (props) => {
+  const [isChecked, setIsChecked] = useState(props.isChecked);
+
   const item = props.item;
-  const isChecked = props.isChecked;
   const variant = item.variant ? item.variant : "primary";
   const title = item.title ? item.title : "Lorem ipsum";
   const price = item.price ? item.price : "10";
@@ -19,9 +19,11 @@ const ItemCard = (props) => {
     : Image.resolveAssetSource(defaultFood).uri;
 
   const allergene = item.allergene ? item.allergene : null;
+  const updateCounter = props.updateCounter;
 
   const handleCheckboxPress = () => {
-    props.updateCounter(!isChecked, item.key);
+    updateCounter(!isChecked, item.key);
+    setIsChecked(!isChecked);
   };
   return (
     <View style={[styles[variant].container, styles.container]}>
@@ -33,7 +35,7 @@ const ItemCard = (props) => {
       </TouchableOpacity>
       <View style={styles[variant].textContainer}>
         <View style={styles.text}>
-          <Text>{title}</Text>
+          <Text style={styles[variant].title}>{title}</Text>
           <Text>{price}€</Text>
         </View>
         <View style={styles.descContent}>
@@ -49,13 +51,14 @@ const ItemCard = (props) => {
           />
         </View>
       </View>
-      {allergene && (
+      {allergene && variant == "tertiary" && (
         <View style={styles.tertiary.textContainer}>
           <View style={styles.text && styles.allergene}>
-            <Text>Allergenes</Text>
+            <Text style={styles.tertiary.title}>Allergenes</Text>
             <FlatList
               data={allergene}
-              renderItem={({ item }) => <Text>{item.key}</Text>}
+              renderItem={({ item }) => <Text>- {item}</Text>}
+              keyExtractor={(item) => item}
             />
           </View>
         </View>
@@ -101,6 +104,9 @@ const styles = StyleSheet.create({
       height: 207,
       borderTopRightRadius: 5,
     },
+    title: {
+      fontSize: 15,
+    },
     textContainer: { padding: 12, gap: 13 },
     fillColor: "#E33620",
     desc: {
@@ -137,7 +143,10 @@ const styles = StyleSheet.create({
     image: {
       width: "100%",
       aspectRatio: "4/3",
-      borderBottomLeftRadius: 5,
+      bordertopLeftRadius: 5,
+    },
+    title: {
+      fontSize: 24,
     },
     textContainer: {
       paddingLeft: 8,
