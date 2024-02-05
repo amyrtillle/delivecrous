@@ -10,7 +10,6 @@ type Props = {
 };
 
 const MenuScreen = (props: Props) => {
-  console.log(props.updateCounter);
   return (
     <View style={styles.container}>
       <ScrollView>

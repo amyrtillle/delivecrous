@@ -1,14 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 const MenuBar = (props) => {
   const variant = props.variant ? props.variant : "primary";
   const counter = props.counter ? props.counter : 0;
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {variant === "secondary" && (
-        <TouchableOpacity onPress={props.onPress}>
+        <TouchableOpacity>
           <Image
             source={require("../assets/leftArrow.png")}
             style={styles.image}
@@ -18,8 +20,10 @@ const MenuBar = (props) => {
 
       <Text style={styles[variant].title}>Delivecrous</Text>
       <View>
-        <Text style={styles.counter}>{counter}</Text>
-        <Image source={require("../assets/cart.png")} style={styles.image} />
+        <TouchableOpacity onPress={() => console.log("cclickec")}>
+          <Text style={styles.counter}>{counter}</Text>
+          <Image source={require("../assets/cart.png")} style={styles.image} />
+        </TouchableOpacity>
       </View>
     </View>
   );
